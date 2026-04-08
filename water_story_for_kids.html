@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rohinoy & Arushi's Magical Water Adventure!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --sky:   #fff9e6;
+      --pink:  #ff7eb9;
+      --blue:  #4ec3f7;
+      --teal:  #3dd6c8;
+      --purple:#b388ff;
+      --yellow:#ffe44d;
+      --orange:#ffab40;
+      --green: #69f0ae;
+      --red:   #ff6b6b;
+      --dark:  #2d3561;
+      --card:  #ffffffee;
+      --ink:   #2c3e50;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fff9e6 0%, #fce4ec 25%, #e3f2fd 55%, #f3e5f5 80%, #e8f5e9 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- STARS floating background ---- */
+    .bg-stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .star {
+      position: absolute; border-radius: 50%; opacity: .55;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite var(--del, 0s);
+    }
+    @keyframes twinkle { 0%,100%{opacity:.2;transform:scale(.8)} 50%{opacity:.9;transform:scale(1.2)} }
+
+    /* ---- MAIN WRAPPER ---- */
+    .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 18px 16px 60px; }
+
+    /* ---- COVER ---- */
+    .cover {
+      background: linear-gradient(145deg, #fffde7, #fce4ec 40%, #e3f2fd);
+      border-radius: 36px;
+      border: 4px solid var(--yellow);
+      box-shadow: 0 20px 60px rgba(100,50,200,.18), 0 2px 0 #fff inset;
+      padding: 36px 28px 30px;
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 20% 20%, #ffe082aa 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 80%, #f8bbd0aa 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .grandpa-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff8a65, #ff5722);
+      color: white;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      padding: 8px 24px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(255,87,34,.35);
+      letter-spacing: .04em;
+    }
+    .cover-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      color: #6a1b9a;
+      line-height: 1.1;
+      text-shadow: 3px 3px 0 #f8bbd0, 6px 6px 0 #e1bee7;
+      margin-bottom: 10px;
+    }
+    .cover-subtitle {
+      font-size: 1.15rem;
+      color: #5d4037;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+    .kids-row {
+      display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+    }
+    .kid-badge {
+      background: white;
+      border-radius: 24px;
+      padding: 14px 22px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.1);
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+    .kid-badge .emoji { font-size: 2.4rem; display: block; margin-bottom: 4px; }
+    .kid-badge.boy  { border: 3px solid #4fc3f7; color: #01579b; }
+    .kid-badge.girl { border: 3px solid #f06292; color: #880e4f; }
+
+    /* ---- PROGRESS DOTS ---- */
+    .nav-dots {
+      display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .dot-btn {
+      width: 42px; height: 42px; border-radius: 50%; border: 3px solid #fff;
+      font-size: 1.1rem; cursor: pointer; font-family: 'Fredoka One', sans-serif;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,.18);
+    }
+    .dot-btn:hover { transform: scale(1.15); }
+    .dot-btn.active { transform: scale(1.25); box-shadow: 0 0 0 4px var(--yellow), 0 6px 18px rgba(0,0,0,.2); }
+
+    /* ---- STORY CARD ---- */
+    .story-card {
+      display: none;
+      background: var(--card);
+      border-radius: 34px;
+      padding: 32px 28px 36px;
+      box-shadow: 0 18px 60px rgba(100,50,200,.13);
+      position: relative;
+      overflow: hidden;
+      border: 3px solid transparent;
+      animation: popIn .4s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .story-card.active { display: block; }
+    @keyframes popIn { from{opacity:0;transform:scale(.93) translateY(14px)} to{opacity:1;transform:none} }
+
+    .card-banner {
+      background: linear-gradient(135deg, var(--c1, #4fc3f7), var(--c2, #b388ff));
+      border-radius: 20px;
+      padding: 18px 22px 14px;
+      margin-bottom: 22px;
+      text-align: center;
+      position: relative;
+    }
+    .card-number {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 4rem;
+      color: rgba(255,255,255,.25);
+      position: absolute;
+      top: -4px; right: 16px;
+      line-height: 1;
+    }
+    .card-icon { font-size: 3rem; margin-bottom: 6px; }
+    .card-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+      color: white;
+      text-shadow: 2px 2px 0 rgba(0,0,0,.15);
+    }
+
+    /* ---- GRANDPA SPEECH ---- */
+    .grandpa-speech {
+      background: #fff8e1;
+      border-left: 6px solid var(--orange);
+      border-radius: 0 20px 20px 0;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      font-size: 1.12rem;
+      line-height: 1.7;
+      color: #4e342e;
+      position: relative;
+    }
+    .grandpa-speech::before {
+      content: '👴 Grandpa says:';
+      display: block;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: .95rem;
+      color: #e65100;
+      margin-bottom: 8px;
+    }
+
+    /* ---- FUNNY ASIDE ---- */
+    .funny-box {
+      background: linear-gradient(135deg, #fff9c4, #fffde7);
+      border: 3px dashed var(--yellow);
+      border-radius: 22px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: #5d4037;
+      font-weight: 700;
+    }
+    .funny-box::before { content: '😂 Ha ha! '; color: #e65100; }
+
+    /* ---- SCIENCE BOX ---- */
+    .science-box {
+      background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+      border-radius: 22px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: var(--dark);
+      font-weight: 600;
+      border: 2px solid #b3c6f7;
+    }
+    .science-box .sci-title {
+      font-family: 'Fredoka One', sans-serif;
+      color: #1565c0;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ---- CHARACTERS ---- */
+    .char-scene {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 22px;
+    }
+    .char-bubble {
+      background: white;
+      border-radius: 24px;
+      padding: 14px 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.1);
+      max-width: 220px;
+      font-size: .96rem;
+      font-weight: 700;
+      color: var(--ink);
+      position: relative;
+      border: 3px solid var(--c, #4fc3f7);
+    }
+    .char-bubble .speaker {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: var(--c, #0288d1);
+    }
+    .char-emoji { font-size: 2.2rem; }
+
+    /* ---- SVG ILLUSTRATIONS ---- */
+    .illus-wrap {
+      background: linear-gradient(135deg, #f0f9ff, #fce4ec 60%, #f3e5f5);
+      border-radius: 26px;
+      padding: 16px;
+      margin-bottom: 22px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,.05);
+    }
+    svg { width: 100%; height: auto; display: block; }
+
+    /* ---- ATOMS ---- */
+    .atom-h circle { fill: url(#hG) }
+    .atom-o circle { fill: url(#oG) }
+    .atom-txt { fill: white; font-size: 22px; font-weight: 900; text-anchor: middle; dominant-baseline: middle; }
+
+    .bounce { animation: bounce 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .bounce2 { animation: bounce 2s ease-in-out infinite .3s; transform-box: fill-box; transform-origin: center; }
+    .bounce3 { animation: bounce 2s ease-in-out infinite .6s; transform-box: fill-box; transform-origin: center; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    /* Ice molecules vibrate VERY slightly — locked in rigid crystal lattice, almost no movement */
+    .wiggle { animation: iceVib 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes iceVib { 0%,100%{transform:translate(0,0)} 25%{transform:translate(1px,-1px)} 75%{transform:translate(-1px,1px)} }
+
+    .spin { animation: spin 5s linear infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .float { animation: floatAnim 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes floatAnim { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    .drip { animation: drip 2.2s ease-in-out infinite; }
+    @keyframes drip { 0%,100%{transform:translateY(0) scaleY(1)} 50%{transform:translateY(8px) scaleY(1.1)} }
+
+    .steam-up { animation: steamUp 2.8s ease-out infinite; }
+    @keyframes steamUp { 0%{transform:translateY(0);opacity:.8} 100%{transform:translateY(-50px);opacity:0} }
+
+    .swim { animation: swim 4s ease-in-out infinite; }
+    @keyframes swim { 0%,100%{transform:translateX(0)} 50%{transform:translateX(50px)} }
+
+    .rain-drop { animation: rainAnim 1.6s linear infinite; }
+    @keyframes rainAnim { 0%{transform:translateY(-10px);opacity:0} 20%{opacity:1} 100%{transform:translateY(30px);opacity:0} }
+
+    .sun-pulse { animation: sunPulse 2.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes sunPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+    .ice-crystal { animation: iceSpin 8s linear infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes iceSpin { to{transform:rotate(60deg)} }
+
+    /* ---- NAVIGATION BUTTONS ---- */
+    .nav-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      margin-top: 22px; flex-wrap: wrap;
+    }
+    .nav-btn {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      padding: 14px 26px;
+      border: none; border-radius: 999px; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+      color: white;
+    }
+    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.22); }
+    .btn-prev { background: linear-gradient(135deg, #90a4ae, #546e7a); }
+    .btn-next { background: linear-gradient(135deg, #66bb6a, #2e7d32); }
+    .btn-next.final { background: linear-gradient(135deg, #ff7043, #e64a19); }
+
+    .page-indicator {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.05rem; color: #7b5ea7; font-weight: 700;
+    }
+
+    /* ---- FINAL SCREEN ---- */
+    .final-screen {
+      text-align: center; padding: 20px 0;
+    }
+    .final-screen h2 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: #6a1b9a;
+      margin-bottom: 16px;
+    }
+    .stars-row { font-size: 2.5rem; margin-bottom: 18px; }
+    .trophy { font-size: 5rem; animation: bounce 1.5s ease-in-out infinite; display: inline-block; }
+
+    /* ---- FUN FACTS CHIPS ---- */
+    .facts-row {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;
+    }
+    .fact-chip {
+      background: white;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: .92rem;
+      font-weight: 800;
+      box-shadow: 0 3px 10px rgba(0,0,0,.1);
+      border: 2px solid var(--c, #b388ff);
+      color: var(--dark);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating background stars -->
+<div class="bg-stars" id="bgStars"></div>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="grandpa-badge">📖 A Story by Grandpa</div>
+    <div class="cover-title">Rohinoy & Arushi's<br>Super Wet Water Adventure! 💧</div>
+    <div class="cover-subtitle">Why is water so magical? Let's find out — together!</div>
+    <div class="kids-row">
+      <div class="kid-badge boy">
+        <span class="emoji">🧒</span>
+        Rohinoy<br><small style="font-weight:600;font-size:.85rem">Age 5+, the Big Explorer!</small>
+      </div>
+      <div class="kid-badge girl">
+        <span class="emoji">👧</span>
+        Arushi<br><small style="font-weight:600;font-size:.85rem">Age 2+, the Tiny Splash Queen!</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER NAV DOTS -->
+  <div class="nav-dots" id="navDots"></div>
+
+  <!-- =============================== CHAPTER 0 =============================== -->
+  <div class="story-card active" id="ch0" style="--border-color:#4fc3f7">
+    <div class="card-banner" style="--c1:#4fc3f7;--c2:#3f51b5">
+      <div class="card-number">1</div>
+      <div class="card-icon">⚗️</div>
+      <div class="card-title">Water Is Made From Tiny Lego Pieces!</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Come here, Rohinoy! Come here, little Arushi! Sit on Grandpa's lap. Today I'm going to tell you the biggest secret in the world — even bigger than where Grandpa hides the cookies! 🍪<br><br>
+      You see, <strong>every single drop of water</strong> you've ever drunk, splashed in, or sneezed out — it's all built from tiny, TINY invisible pieces called <em>atoms</em>! Tinier than your tiniest booger, Arushi! 👃😄
+    </div>
+
+    <div class="funny-box">
+      Rohinoy once said: "Grandpa, I can see water!" And Grandpa said: "Yes! But can you see the <em>atoms</em> inside it?" Rohinoy stared SO hard his eyes went cross-eyed! 🤣
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 320" aria-label="H H O atoms floating cheerfully">
+        <defs>
+          <linearGradient id="hG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#80deea"/>
+            <stop offset="100%" stop-color="#0288d1"/>
+          </linearGradient>
+          <linearGradient id="oG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff8a80"/>
+            <stop offset="100%" stop-color="#c62828"/>
+          </linearGradient>
+          <radialGradient id="glowH" cx="40%" cy="35%">
+            <stop offset="0%" stop-color="white" stop-opacity=".5"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glowO" cx="40%" cy="35%">
+            <stop offset="0%" stop-color="white" stop-opacity=".45"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="700" height="320" rx="22" fill="#f0f8ff"/>
+
+        <!-- Happy face H1 -->
+        <g class="bounce atom-h">
+          <circle cx="140" cy="160" r="70" fill="url(#hG)"/>
+          <circle cx="140" cy="160" r="70" fill="url(#glowH)"/>
+          <text class="atom-txt" x="140" y="152">H</text>
+          <!-- smile -->
+          <path d="M120 178 Q140 196 160 178" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <circle cx="124" cy="165" r="6" fill="white"/>
+          <circle cx="156" cy="165" r="6" fill="white"/>
+        </g>
+        <text x="140" y="258" text-anchor="middle" font-family="Fredoka One, cursive" font-size="20" fill="#01579b">Hydrogen</text>
+        <text x="140" y="280" text-anchor="middle" font-family="Nunito, sans-serif" font-size="15" font-weight="700" fill="#5d9bb5">(friendly &amp; light!)</text>
+
+        <!-- Happy face H2 -->
+        <g class="bounce2 atom-h">
+          <circle cx="340" cy="160" r="70" fill="url(#hG)"/>
+          <circle cx="340" cy="160" r="70" fill="url(#glowH)"/>
+          <text class="atom-txt" x="340" y="152">H</text>
+          <path d="M320 178 Q340 196 360 178" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <circle cx="324" cy="165" r="6" fill="white"/>
+          <circle cx="356" cy="165" r="6" fill="white"/>
+        </g>
+        <text x="340" y="258" text-anchor="middle" font-family="Fredoka One, cursive" font-size="20" fill="#01579b">Hydrogen</text>
+        <text x="340" y="280" text-anchor="middle" font-family="Nunito, sans-serif" font-size="15" font-weight="700" fill="#5d9bb5">(its twin!)</text>
+
+        <!-- Happy face O -->
+        <g class="bounce3 atom-o">
+          <circle cx="570" cy="155" r="88" fill="url(#oG)"/>
+          <circle cx="570" cy="155" r="88" fill="url(#glowO)"/>
+          <text class="atom-txt" x="570" y="145" font-size="28">O</text>
+          <path d="M545 176 Q570 200 595 176" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <circle cx="548" cy="160" r="8" fill="white"/>
+          <circle cx="592" cy="160" r="8" fill="white"/>
+        </g>
+        <text x="570" y="272" text-anchor="middle" font-family="Fredoka One, cursive" font-size="20" fill="#b71c1c">Oxygen</text>
+        <text x="570" y="294" text-anchor="middle" font-family="Nunito, sans-serif" font-size="15" font-weight="700" fill="#b55d5d">(the big boss!)</text>
+
+        <!-- Plus signs -->
+        <text x="230" y="175" text-anchor="middle" font-family="Fredoka One, cursive" font-size="44" fill="#ff7043">+</text>
+        <text x="438" y="175" text-anchor="middle" font-family="Fredoka One, cursive" font-size="44" fill="#ff7043">+</text>
+      </svg>
+    </div>
+
+    <div class="science-box">
+      <div class="sci-title">🔬 Science Time!</div>
+      <strong>H₂O</strong> = 2 Hydrogen atoms + 1 Oxygen atom. That's the recipe for every drop of water! Even the water in your fish tank, Rohinoy! And in Arushi's little bathtub too! 🐠🛁
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#4fc3f7">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "Grandpa… are atoms like LEGO bricks?!"
+      </div>
+      <div class="char-bubble" style="--c:#f06292">
+        <div class="speaker">👧 Arushi says:</div>
+        "Wa-wa!! 💧" <em>(splashes her juice)</em>
+      </div>
+      <div class="char-bubble" style="--c:#ff7043">
+        <div class="speaker">👴 Grandpa says:</div>
+        "Yes! Exactly like LEGOs! Except way tinier — and you can't step on these in the dark! 😄"
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <span></span>
+      <span class="page-indicator">Chapter 1 of 7</span>
+      <button class="nav-btn btn-next" onclick="goTo(1)">Next Story! ➡️</button>
+    </div>
+  </div>
+
+  <!-- =============================== CHAPTER 1 =============================== -->
+  <div class="story-card" id="ch1">
+    <div class="card-banner" style="--c1:#ab47bc;--c2:#7b1fa2">
+      <div class="card-number">2</div>
+      <div class="card-icon">🤝</div>
+      <div class="card-title">When Atoms Hug — A Water Drop Is Born!</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Now listen carefully, Rohinoy — and Arushi, stop eating the book, please! 😂<br><br>
+      Those two H atoms and that one big O atom? They <em>zoom toward each other</em> at great speed and — <strong>BAM!</strong> — they hug so tightly they become ONE thing. That thing is called a <strong>water molecule</strong>! And when MILLIONS of molecules hug together, they become a drop of water you can actually see!
+    </div>
+
+    <div class="funny-box">
+      It's like Rohinoy running to hug Arushi so hard they both fall on the sofa! 💥 Except atoms don't bonk their heads. Usually.
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 340" aria-label="Two H atoms zooming toward O to form water molecule">
+        <defs>
+          <radialGradient id="waterDropG" cx="35%" cy="30%">
+            <stop offset="0%" stop-color="#b3e5fc"/>
+            <stop offset="100%" stop-color="#0288d1"/>
+          </radialGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect x="0" y="0" width="700" height="340" rx="22" fill="#fdf6ff"/>
+
+        <!-- Arrow trail left -->
+        <path d="M90 130 Q150 100 220 130" stroke="#90caf9" stroke-width="4" fill="none" stroke-dasharray="8 6" stroke-linecap="round"/>
+        <polygon points="220,120 240,130 220,140" fill="#90caf9"/>
+
+        <!-- Arrow trail right -->
+        <path d="M610 130 Q550 100 480 130" stroke="#90caf9" stroke-width="4" fill="none" stroke-dasharray="8 6" stroke-linecap="round"/>
+        <polygon points="480,120 460,130 480,140" fill="#90caf9"/>
+
+        <!-- H left rushing in -->
+        <g style="animation: leftRush 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center">
+          <circle cx="100" cy="140" r="50" fill="url(#hG)"/>
+          <text class="atom-txt" x="100" y="132">H</text>
+          <path d="M82 152 Q100 166 118 152" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- H right rushing in -->
+        <g style="animation: rightRush 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center">
+          <circle cx="600" cy="140" r="50" fill="url(#hG)"/>
+          <text class="atom-txt" x="600" y="132">H</text>
+          <path d="M582 152 Q600 166 618 152" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- O in middle -->
+        <g class="float">
+          <circle cx="350" cy="140" r="72" fill="url(#oG)"/>
+          <text class="atom-txt" x="350" y="130" font-size="28">O</text>
+          <path d="M326 154 Q350 175 374 154" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <circle cx="328" cy="140" r="7" fill="white"/>
+          <circle cx="372" cy="140" r="7" fill="white"/>
+        </g>
+
+        <!-- Resulting water drop -->
+        <g class="drip" style="transform-origin:350px 280px">
+          <ellipse cx="350" cy="275" rx="36" ry="44" fill="url(#waterDropG)" filter="url(#glow)"/>
+          <ellipse cx="350" cy="260" rx="16" ry="10" fill="white" opacity=".4"/>
+          <text x="350" y="280" text-anchor="middle" font-family="Fredoka One, cursive" font-size="18" fill="white">H₂O</text>
+        </g>
+        <text x="350" y="336" text-anchor="middle" font-family="Fredoka One, cursive" font-size="17" fill="#4527a0">One tiny water molecule! 🎉</text>
+
+        <style>
+          @keyframes leftRush { 0%,100%{transform:translateX(0)} 50%{transform:translateX(60px)} }
+          @keyframes rightRush { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-60px)} }
+        </style>
+      </svg>
+    </div>
+
+    <div class="facts-row">
+      <div class="fact-chip" style="--c:#4fc3f7">💧 1 drop = ~2 million trillion molecules!</div>
+      <div class="fact-chip" style="--c:#ce93d8">🔗 The hug is called a "bond"</div>
+      <div class="fact-chip" style="--c:#a5d6a7">✨ It happens in a flash!</div>
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#ab47bc">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "So every time I drink water, I'm drinking a BILLION hugs?!"
+      </div>
+      <div class="char-bubble" style="--c:#f06292">
+        <div class="speaker">👧 Arushi says:</div>
+        "Hug! 🫂" <em>(hugs Grandpa's arm)</em>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="goTo(0)">⬅️ Back</button>
+      <span class="page-indicator">Chapter 2 of 7</span>
+      <button class="nav-btn btn-next" onclick="goTo(2)">Next Story! ➡️</button>
+    </div>
+  </div>
+
+  <!-- =============================== CHAPTER 2 =============================== -->
+  <div class="story-card" id="ch2">
+    <div class="card-banner" style="--c1:#26c6da;--c2:#00838f">
+      <div class="card-number">3</div>
+      <div class="card-icon">🧊💧☁️</div>
+      <div class="card-title">Water's Three Outfits: Solid, Liquid & Gas!</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Here is something amazing, Rohinoy — water is like a superhero who has THREE different costumes!<br><br>
+      🧊 <strong>ICE</strong> — when it's very cold, water molecules slow down and hold hands in a grid, standing very stiff. Like Arushi when she doesn't want to take a bath! 😄<br><br>
+      💧 <strong>LIQUID</strong> — normal water — molecules wiggle and dance freely. Like you two after eating too much dessert!<br><br>
+      ☁️ <strong>GAS/VAPOR</strong> — water can slowly turn into invisible gas at ANY temperature (that's why wet clothes dry!). But at <strong>100°C it boils fast</strong> and turns to gas very quickly. Like Grandpa's tea disappearing as steam!
+    </div>
+
+    <div class="funny-box">
+      Arushi once tried to catch the steam from Grandpa's tea. She grabbed at the air, then looked at her empty hands very confused. That's right, little one — it escaped!! 😂
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 300" aria-label="Ice solid liquid gas side by side">
+        <rect x="0" y="0" width="700" height="300" rx="22" fill="#e8f5e9"/>
+
+        <!-- ICE panel -->
+        <rect x="10" y="10" width="210" height="280" rx="18" fill="#e1f5fe"/>
+        <text x="115" y="46" text-anchor="middle" font-family="Fredoka One, cursive" font-size="22" fill="#01579b">🧊 ICE</text>
+        <!-- grid of molecules -->
+        <g fill="#29b6f6" opacity=".85">
+          <circle cx="60"  cy="90"  r="18" class="wiggle"/>
+          <circle cx="115" cy="90"  r="18" class="wiggle" style="animation-delay:.15s"/>
+          <circle cx="170" cy="90"  r="18" class="wiggle" style="animation-delay:.3s"/>
+          <circle cx="60"  cy="140" r="18" class="wiggle" style="animation-delay:.1s"/>
+          <circle cx="115" cy="140" r="18" class="wiggle" style="animation-delay:.25s"/>
+          <circle cx="170" cy="140" r="18" class="wiggle" style="animation-delay:.4s"/>
+          <circle cx="60"  cy="190" r="18" class="wiggle" style="animation-delay:.2s"/>
+          <circle cx="115" cy="190" r="18" class="wiggle" style="animation-delay:.35s"/>
+          <circle cx="170" cy="190" r="18" class="wiggle" style="animation-delay:.5s"/>
+        </g>
+        <!-- bond lines -->
+        <g stroke="#81d4fa" stroke-width="3">
+          <line x1="60" y1="90" x2="115" y2="90"/><line x1="115" y1="90" x2="170" y2="90"/>
+          <line x1="60" y1="90" x2="60" y2="140"/><line x1="115" y1="90" x2="115" y2="140"/><line x1="170" y1="90" x2="170" y2="140"/>
+          <line x1="60" y1="140" x2="115" y2="140"/><line x1="115" y1="140" x2="170" y2="140"/>
+          <line x1="60" y1="140" x2="60" y2="190"/><line x1="115" y1="140" x2="115" y2="190"/><line x1="170" y1="140" x2="170" y2="190"/>
+          <line x1="60" y1="190" x2="115" y2="190"/><line x1="115" y1="190" x2="170" y2="190"/>
+        </g>
+        <text x="115" y="250" text-anchor="middle" font-family="Nunito, sans-serif" font-size="14" font-weight="800" fill="#01579b">Molecules stand still</text>
+        <text x="115" y="270" text-anchor="middle" font-family="Nunito, sans-serif" font-size="13" font-weight="700" fill="#4db6e8">in neat rows</text>
+
+        <!-- LIQUID panel -->
+        <rect x="240" y="10" width="220" height="280" rx="18" fill="#e3f2fd"/>
+        <text x="350" y="46" text-anchor="middle" font-family="Fredoka One, cursive" font-size="22" fill="#1565c0">💧 LIQUID</text>
+        <g fill="#42a5f5">
+          <circle cx="285" cy="100" r="18" class="bounce" style="animation-delay:.05s"/>
+          <circle cx="345" cy="115" r="18" class="bounce2" style="animation-delay:.2s"/>
+          <circle cx="410" cy="100" r="18" class="bounce3"/>
+          <circle cx="270" cy="165" r="18" class="bounce" style="animation-delay:.3s"/>
+          <circle cx="330" cy="155" r="18" class="bounce2" style="animation-delay:.1s"/>
+          <circle cx="398" cy="168" r="18" class="bounce3" style="animation-delay:.4s"/>
+          <circle cx="305" cy="215" r="18" class="bounce" style="animation-delay:.25s"/>
+          <circle cx="368" cy="205" r="18" class="bounce2" style="animation-delay:.15s"/>
+        </g>
+        <text x="350" y="255" text-anchor="middle" font-family="Nunito, sans-serif" font-size="14" font-weight="800" fill="#1565c0">Molecules dance freely</text>
+        <text x="350" y="275" text-anchor="middle" font-family="Nunito, sans-serif" font-size="13" font-weight="700" fill="#64b5f6">wiggle wiggle!</text>
+
+        <!-- GAS/VAPOR panel -->
+        <rect x="480" y="10" width="210" height="280" rx="18" fill="#f3e5f5"/>
+        <text x="585" y="46" text-anchor="middle" font-family="Fredoka One, cursive" font-size="22" fill="#6a1b9a">☁️ GAS</text>
+        <g fill="#ce93d8" opacity=".8">
+          <circle cx="510" cy="80"  r="14" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:0s"/>
+          <circle cx="580" cy="100" r="12" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:.5s"/>
+          <circle cx="640" cy="72"  r="15" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:.2s"/>
+          <circle cx="530" cy="155" r="14" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:.8s"/>
+          <circle cx="600" cy="140" r="12" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:.3s"/>
+          <circle cx="555" cy="200" r="16" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:1.1s"/>
+          <circle cx="630" cy="195" r="11" style="animation: steam-rise 2.5s ease-out infinite; animation-delay:.6s"/>
+        </g>
+        <text x="585" y="255" text-anchor="middle" font-family="Nunito, sans-serif" font-size="14" font-weight="800" fill="#6a1b9a">Molecules FLY FREE!</text>
+        <text x="585" y="275" text-anchor="middle" font-family="Nunito, sans-serif" font-size="13" font-weight="700" fill="#ba68c8">zoom zoom escape!</text>
+
+        <style>
+          @keyframes steam-rise { 0%{opacity:.8;transform:translateY(0)} 100%{opacity:0;transform:translateY(-40px)} }
+        </style>
+      </svg>
+    </div>
+
+    <div class="science-box">
+      <div class="sci-title">🔬 Temperature controls the costume!</div>
+      Below 0°C → ICE. Between 0°C and 100°C → LIQUID water. Water slowly turns to invisible gas (evaporation) at <em>any</em> temperature — but at <strong>100°C it boils</strong> and turns to gas very fast! The <em>same</em> water molecules, just in different moods!
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#26c6da">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "I want to be vapor so I can fly to school instead of walking!"
+      </div>
+      <div class="char-bubble" style="--c:#f06292">
+        <div class="speaker">👴 Grandpa says:</div>
+        "Ha! At 100°C you'd be a bit too hot for school, my boy! 🌡️😄"
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="goTo(1)">⬅️ Back</button>
+      <span class="page-indicator">Chapter 3 of 7</span>
+      <button class="nav-btn btn-next" onclick="goTo(3)">Next Story! ➡️</button>
+    </div>
+  </div>
+
+  <!-- =============================== CHAPTER 3 =============================== -->
+  <div class="story-card" id="ch3">
+    <div class="card-banner" style="--c1:#80cbc4;--c2:#00695c">
+      <div class="card-number">4</div>
+      <div class="card-icon">🏄</div>
+      <div class="card-title">Why Does Ice Float? (It's Cheating, Sort Of!)</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Now this is the SNEAKY part, Rohinoy. Listen!<br><br>
+      When water becomes ice, the molecules hold hands in a special <strong>snowflake shape — hexagons</strong>! Six-sided rings, like tiny honeycombs. And these rings have <em>gaps</em> in the middle — empty spaces!<br><br>
+      All those empty spaces mean ice takes up <strong>MORE room</strong> than the same water would. So ice is lighter — less dense — and floats on top of liquid water!<br><br>
+      But here's the sneaky secret: <strong>only about 1/10th of the ice sticks up above the water.</strong> The other BIG 9/10ths hides underwater — like an iceberg hiding most of itself! That's why ships have to be very careful. 🚢<br><br>
+      <strong>Ice is basically an iceberg in disguise!</strong> 😄
+    </div>
+
+    <div class="funny-box">
+      Arushi's rubber duck floats too — but for different reasons! The duck is full of air inside. Ice floats because of its sneaky hexagon shape. Both are showing off. 🦆🧊
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 420" aria-label="Ice floating on water — only small tip above, most hidden below">
+        <defs>
+          <linearGradient id="waterG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4fc3f7"/>
+            <stop offset="100%" stop-color="#01579b"/>
+          </linearGradient>
+          <linearGradient id="skyBgG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8f5e9"/>
+            <stop offset="100%" stop-color="#b3e5fc"/>
+          </linearGradient>
+          <clipPath id="aboveWater"><rect x="0" y="0" width="700" height="100"/></clipPath>
+          <clipPath id="belowWater"><rect x="0" y="100" width="700" height="320"/></clipPath>
+        </defs>
+
+        <!-- Sky background -->
+        <rect x="0" y="0" width="700" height="420" rx="22" fill="url(#skyBgG)"/>
+        <!-- Water -->
+        <rect x="0" y="100" width="700" height="320" rx="0" fill="url(#waterG)"/>
+        <!-- Water surface line -->
+        <line x1="0" y1="100" x2="700" y2="100" stroke="#b3e5fc" stroke-width="3"/>
+        <text x="30" y="92" font-family="Fredoka One, cursive" font-size="16" fill="#01579b">Water surface</text>
+
+        <!-- THE ICEBERG: total height = 220px. waterline at y=100.
+             10% above = 22px → top of ice at y=78
+             90% below = 198px → bottom of ice at y=298
+             width tapers: wider underwater (like real iceberg) -->
+
+        <!-- BELOW-WATER part of ice (large, 90%) - darker blue-white tint -->
+        <g class="float" style="transform-origin:350px 200px">
+          <!-- Below water portion: y=100 to y=298, width 240 tapering to 160 -->
+          <path d="M230 100 L470 100 L450 298 L250 298 Z" fill="#81d4fa" opacity=".75"/>
+          <!-- Above water portion: y=78 to y=100, small tip width 240 -->
+          <rect x="230" y="78" width="240" height="22" rx="8" fill="#e1f5fe" opacity=".95"/>
+
+          <!-- Hexagon crystal visible in above-water portion -->
+          <g stroke="#0288d1" stroke-width="3" fill="none" transform="translate(315,56)">
+            <polygon points="35,0 58,13 58,39 35,52 12,39 12,13" class="ice-crystal"/>
+            <circle cx="35" cy="26" r="5" fill="#0288d1"/>
+            <circle cx="12" cy="13" r="4" fill="#29b6f6"/>
+            <circle cx="58" cy="13" r="4" fill="#29b6f6"/>
+            <circle cx="12" cy="39" r="4" fill="#29b6f6"/>
+            <circle cx="58" cy="39" r="4" fill="#29b6f6"/>
+            <circle cx="35" cy="0"  r="4" fill="#29b6f6"/>
+            <circle cx="35" cy="52" r="4" fill="#29b6f6"/>
+          </g>
+
+          <!-- Label in underwater part -->
+          <text x="350" y="180" text-anchor="middle" font-family="Fredoka One, cursive" font-size="20" fill="#01579b">90% hidden</text>
+          <text x="350" y="205" text-anchor="middle" font-family="Fredoka One, cursive" font-size="20" fill="#01579b">under water!</text>
+          <text x="350" y="232" text-anchor="middle" font-family="Nunito, sans-serif" font-size="14" font-weight="800" fill="#0277bd">⬇ the BIG secret part ⬇</text>
+        </g>
+
+        <!-- Above-water label -->
+        <text x="510" y="72" font-family="Fredoka One, cursive" font-size="15" fill="#2e7d32">⬆ only ~10% above!</text>
+        <text x="510" y="90" font-family="Fredoka One, cursive" font-size="13" fill="#1b5e20">(the small visible tip)</text>
+        <!-- Arrow pointing to tip -->
+        <line x1="490" y1="82" x2="474" y2="88" stroke="#2e7d32" stroke-width="2"/>
+
+        <!-- Below-water label arrow -->
+        <text x="520" y="200" font-family="Fredoka One, cursive" font-size="15" fill="white">⬅ ~90% below!</text>
+        <text x="520" y="220" font-family="Nunito, sans-serif" font-size="13" font-weight="800" fill="#b3e5fc">The hidden giant part</text>
+
+        <!-- Water label -->
+        <text x="80" y="140" font-family="Fredoka One, cursive" font-size="18" fill="white">Liquid Water 💧</text>
+
+        <!-- Fish under ice -->
+        <g class="swim">
+          <ellipse cx="160" cy="340" rx="40" ry="18" fill="#ffcc02"/>
+          <polygon points="198,340 228,322 228,358" fill="#ffcc02"/>
+          <circle cx="144" cy="334" r="4" fill="#333"/>
+          <path d="M148 348 Q160 356 172 348" stroke="white" stroke-width="2" fill="none"/>
+        </g>
+        <text x="160" y="380" text-anchor="middle" font-family="Fredoka One, cursive" font-size="14" fill="white">Fish swim freely! 🐠</text>
+
+        <!-- Surprised emoji above water -->
+        <text x="350" y="68" text-anchor="middle" font-family="Fredoka One, cursive" font-size="15" fill="#37474f">😮 Just the tiny tip!</text>
+      </svg>
+    </div>
+
+    <div class="science-box">
+      <div class="sci-title">🔬 This is VERY important for life!</div>
+      Because ice floats, ponds and oceans freeze from the TOP down — not the bottom. The water underneath stays liquid, so fish survive! And here's a jaw-dropper: about <strong>90% of floating ice hides below the water surface</strong> — only a tiny ~10% tip sticks out. That's what makes icebergs so dangerous for ships! 🚢 Good job, hexagons! 🎉
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#80cbc4">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "Grandpa! The fish say THANK YOU to hexagons?!"
+      </div>
+      <div class="char-bubble" style="--c:#ff7043">
+        <div class="speaker">👴 Grandpa says:</div>
+        "Every single winter, Rohinoy. Every. Single. Winter. 🐟🙏"
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="goTo(2)">⬅️ Back</button>
+      <span class="page-indicator">Chapter 4 of 7</span>
+      <button class="nav-btn btn-next" onclick="goTo(4)">Next Story! ➡️</button>
+    </div>
+  </div>
+
+  <!-- =============================== CHAPTER 4 =============================== -->
+  <div class="story-card" id="ch4">
+    <div class="card-banner" style="--c1:#5c6bc0;--c2:#283593">
+      <div class="card-number">5</div>
+      <div class="card-icon">🐧🐟🦭</div>
+      <div class="card-title">A Whole City LIVES Under the Ice!</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Okay, Arushi, wake up — this is the ANIMALS chapter! 🐾<br><br>
+      Far, far away in the cold north and south, there are enormous seas covered with thick floating ice. And under all that ice?<br><br>
+      <strong>It's a secret underwater city!</strong> 🏙️ Fish zoom around like cars on a road. Little shrimp (called krill) float like clouds. Seals swim up to tiny holes in the ice to BREATHE — poke their nose out, sniff sniff, then zoom back under! And whales sing songs that travel for miles!
+    </div>
+
+    <div class="funny-box">
+      A seal comes up through a breathing hole, looks around, spots a polar bear, and dives back in. The polar bear is left standing there like Rohinoy waiting for his turn on the swing. 😂🦭🐻‍❄️
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 420" aria-label="Cross section: thin ice visible above water, thick ice mass below, animals underneath">
+        <defs>
+          <linearGradient id="skyG2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8f5e9"/>
+            <stop offset="100%" stop-color="#b3e5fc"/>
+          </linearGradient>
+          <linearGradient id="seaG2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0288d1"/>
+            <stop offset="100%" stop-color="#01579b"/>
+          </linearGradient>
+        </defs>
+        <!-- Sky above water -->
+        <rect x="0" y="0" width="700" height="420" rx="22" fill="url(#skyG2)"/>
+        <!-- Sky clouds -->
+        <ellipse cx="150" cy="38" rx="80" ry="28" fill="white" opacity=".8"/>
+        <ellipse cx="200" cy="28" rx="60" ry="24" fill="white" opacity=".85"/>
+        <ellipse cx="550" cy="40" rx="90" ry="26" fill="white" opacity=".78"/>
+
+        <!-- WATER LINE at y=90 -->
+        <!-- Sea (full blue below waterline) -->
+        <rect x="0" y="90" width="700" height="330" fill="url(#seaG2)"/>
+        <!-- subtle water surface shimmer -->
+        <path d="M0 90 C100 84 200 96 300 90 C400 84 500 96 700 90" stroke="#b3e5fc" stroke-width="2" fill="none"/>
+
+        <!-- SEA ICE: 10% above water = 16px (y=74 to y=90), 90% below = 144px (y=90 to y=234) -->
+        <!-- Ice visible tip above water -->
+        <rect x="0" y="74" width="700" height="16" fill="#e1f5fe" opacity=".95"/>
+        <path d="M0 74 C80 66 160 80 240 70 C330 58 400 76 480 66 C560 55 640 74 700 66 L700 90 L0 90 Z" fill="#b3e5fc" opacity=".9"/>
+        <text x="350" y="64" text-anchor="middle" font-family="Fredoka One, cursive" font-size="14" fill="#01579b">🏔️ Floating Sea Ice (only ~10% above water!)</text>
+
+        <!-- Ice bulk BELOW water (90%) — shown as light blue layer -->
+        <rect x="0" y="90" width="700" height="144" fill="#81d4fa" opacity=".35"/>
+        <rect x="0" y="90" width="700" height="144" fill="none" stroke="#29b6f6" stroke-width="1" stroke-dasharray="6 4"/>
+        <text x="100" y="165" font-family="Fredoka One, cursive" font-size="16" fill="#e1f5fe">🧊 ~90% of ice is HERE (below water!)</text>
+
+        <!-- Bottom of ice layer line -->
+        <line x1="0" y1="234" x2="700" y2="234" stroke="#64b5f6" stroke-width="2" stroke-dasharray="8 5"/>
+
+        <!-- Breathing hole in the ice -->
+        <ellipse cx="440" cy="90" rx="22" ry="8" fill="#0288d1"/>
+        <text x="440" y="52" text-anchor="middle" font-family="Fredoka One, cursive" font-size="13" fill="#004d40">Breathing</text>
+        <text x="440" y="66" text-anchor="middle" font-family="Fredoka One, cursive" font-size="13" fill="#004d40">Hole 🕳️</text>
+        <line x1="440" y1="68" x2="440" y2="82" stroke="#004d40" stroke-width="2" stroke-dasharray="3 3"/>
+
+        <!-- OPEN WATER below ice (below y=234) -->
+        <text x="130" y="260" font-family="Fredoka One, cursive" font-size="18" fill="#ffffff">Liquid ocean water below 💧</text>
+
+        <!-- Polar bear on ice surface -->
+        <g>
+          <ellipse cx="580" cy="82" rx="36" ry="18" fill="white"/>
+          <circle cx="608" cy="68" r="15" fill="white"/>
+          <circle cx="614" cy="64" r="3" fill="#333"/>
+          <ellipse cx="600" cy="73" rx="8" ry="4" fill="#eee"/>
+          <text x="580" y="44" text-anchor="middle" font-family="Fredoka One, cursive" font-size="13" fill="#37474f">🐻‍❄️ Waiting...</text>
+        </g>
+
+        <!-- Seal just below surface near breathing hole -->
+        <g style="animation: sealBob2 2.5s ease-in-out infinite; transform-box:fill-box; transform-origin:440px 116px">
+          <ellipse cx="440" cy="116" rx="44" ry="20" fill="#78909c"/>
+          <circle cx="476" cy="106" r="13" fill="#78909c"/>
+          <circle cx="482" cy="102" r="3" fill="#1c2d3f"/>
+          <path d="M400 122 Q380 132 375 150" stroke="#78909c" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <text x="340" y="148" font-family="Fredoka One, cursive" font-size="13" fill="white">🦭 Sneaking up for air!</text>
+        </g>
+        <style>@keyframes sealBob2{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}</style>
+
+        <!-- Fish 1 in open water zone -->
+        <g class="swim" style="transform-origin:200px 300px">
+          <ellipse cx="200" cy="300" rx="50" ry="22" fill="#ff8a65"/>
+          <polygon points="248,300 282,280 282,320" fill="#ff8a65"/>
+          <circle cx="182" cy="293" r="5" fill="#222"/>
+          <path d="M188 308 Q200 318 212 308" stroke="white" stroke-width="2" fill="none"/>
+          <text x="200" y="340" text-anchor="middle" font-family="Fredoka One, cursive" font-size="13" fill="#ffccbc">Big Orange Fish 🐟</text>
+        </g>
+
+        <!-- Fish 2 in open water zone -->
+        <g style="animation:swim2 5s ease-in-out infinite; transform-origin:520px 360px">
+          <ellipse cx="520" cy="360" rx="40" ry="18" fill="#80deea"/>
+          <polygon points="558,360 588,343 588,377" fill="#80deea"/>
+          <circle cx="504" cy="354" r="4" fill="#222"/>
+          <text x="520" y="394" text-anchor="middle" font-family="Fredoka One, cursive" font-size="13" fill="#b2ebf2">Teal Swimmer 🐠</text>
+        </g>
+        <style>@keyframes swim2{0%,100%{transform:translateX(0)} 50%{transform:translateX(-45px)}}</style>
+
+        <!-- Whale hint in deep zone -->
+        <path d="M40 400 C100 372 180 382 230 405 C260 418 240 425 210 420 C160 413 80 418 40 408 Z" fill="#3949ab" opacity=".75"/>
+        <text x="135" y="414" text-anchor="middle" font-family="Fredoka One, cursive" font-size="14" fill="white">🐋 Whale sings!</text>
+      </svg>
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#5c6bc0">
+        <div class="speaker">👧 Arushi says:</div>
+        "FISH! 🐟🐟🐟" <em>(points at everything excitedly)</em>
+      </div>
+      <div class="char-bubble" style="--c:#4fc3f7">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "The seal is playing hide and seek with the bear! That's SO FUNNY!"
+      </div>
+      <div class="char-bubble" style="--c:#ff7043">
+        <div class="speaker">👴 Grandpa says:</div>
+        "The seal ALWAYS wins. It has a secret door under the water! 😂"
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="goTo(3)">⬅️ Back</button>
+      <span class="page-indicator">Chapter 5 of 7</span>
+      <button class="nav-btn btn-next" onclick="goTo(5)">Next Story! ➡️</button>
+    </div>
+  </div>
+
+  <!-- =============================== CHAPTER 5 =============================== -->
+  <div class="story-card" id="ch5">
+    <div class="card-banner" style="--c1:#ffa726;--c2:#e65100">
+      <div class="card-number">6</div>
+      <div class="card-icon">☀️🌧️🌊</div>
+      <div class="card-title">The Great Water Carousel! (Water Cycle)</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Are you ready for the most magical story of all? Water never runs away. It goes on a giant <strong>round trip — over and over, forever!</strong><br><br>
+      ☀️ The <strong>Sun</strong> warms the ocean and rivers — so water turns to invisible steam and floats UP into the sky!<br><br>
+      🌥️ High up where it's cold, the steam turns back into tiny droplets — they become <strong>clouds</strong>!<br><br>
+      🌧️ The clouds get heavy and — <strong>DRIP DRIP SPLASH</strong> — <strong>rain falls</strong> down!<br><br>
+      🏔️ Rain runs down mountains into rivers… and BACK to the ocean. Then the whole ride starts again!<br><br>
+      <strong>The same water has been doing this loop for BILLIONS of years!</strong>
+    </div>
+
+    <div class="funny-box">
+      Grandpa's theory: the water in Arushi's bath tonight? It might once have been <em>drunk by a dinosaur</em>! 🦕💧 Or rained down on ancient Egypt! Arushi is bathing in history! 😄
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 400" aria-label="Water cycle diagram with sun evaporation clouds rain river">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#b3e5fc"/>
+            <stop offset="55%" stop-color="#e3f2fd"/>
+            <stop offset="100%" stop-color="#0288d1"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="700" height="400" rx="22" fill="url(#skyGrad)"/>
+        <!-- ground/ocean -->
+        <path d="M0 310 C100 285 200 300 310 288 C430 275 560 295 700 282 L700 400 L0 400 Z" fill="#0288d1"/>
+        <text x="100" y="360" font-family="Fredoka One, cursive" font-size="20" fill="white">🌊 Ocean / Rivers</text>
+
+        <!-- Mountain -->
+        <polygon points="480,310 580,150 680,310" fill="#8d6e63"/>
+        <polygon points="555,200 580,150 605,200" fill="white" opacity=".9"/>
+
+        <!-- Sun -->
+        <g class="sun-pulse">
+          <circle cx="100" cy="80" r="48" fill="#ffd740"/>
+          <g stroke="#ffd740" stroke-width="7" stroke-linecap="round">
+            <line x1="100" y1="16" x2="100" y2="2"/>
+            <line x1="100" y1="144" x2="100" y2="160"/>
+            <line x1="36" y1="80" x2="20" y2="80"/>
+            <line x1="164" y1="80" x2="180" y2="80"/>
+            <line x1="55" y1="35" x2="44" y2="24"/>
+            <line x1="145" y1="35" x2="156" y2="24"/>
+            <line x1="55" y1="125" x2="44" y2="136"/>
+            <line x1="145" y1="125" x2="156" y2="136"/>
+          </g>
+        </g>
+        <text x="100" y="170" text-anchor="middle" font-family="Fredoka One, cursive" font-size="16" fill="#e65100">☀️ Hot Sun!</text>
+
+        <!-- Evaporation arrows -->
+        <g stroke="#80deea" stroke-width="5" stroke-linecap="round">
+          <path class="steam-up" d="M260 285 Q255 250 258 200" fill="none" style="animation-delay:0s"/>
+          <path class="steam-up" d="M310 290 Q308 252 312 205" fill="none" style="animation-delay:.6s"/>
+          <path class="steam-up" d="M360 287 Q362 248 358 200" fill="none" style="animation-delay:1.2s"/>
+        </g>
+        <text x="310" y="188" text-anchor="middle" font-family="Fredoka One, cursive" font-size="14" fill="#006064">Invisible vapor rises!</text>
+
+        <!-- Cloud -->
+        <g class="float" style="transform-origin:460px 100px">
+          <ellipse cx="440" cy="112" rx="70" ry="38" fill="#e0e0e0" opacity=".9"/>
+          <ellipse cx="490" cy="100" rx="58" ry="34" fill="#f5f5f5"/>
+          <ellipse cx="530" cy="114" rx="62" ry="34" fill="#e8e8e8" opacity=".85"/>
+          <text x="490" y="58" text-anchor="middle" font-family="Fredoka One, cursive" font-size="16" fill="#546e7a">🌥️ Cloud forms!</text>
+        </g>
+
+        <!-- Rain drops -->
+        <g stroke="#1565c0" stroke-width="5" stroke-linecap="round">
+          <line class="rain-drop" x1="456" y1="148" x2="446" y2="185" style="animation-delay:0s"/>
+          <line class="rain-drop" x1="490" y1="145" x2="480" y2="182" style="animation-delay:.3s"/>
+          <line class="rain-drop" x1="524" y1="148" x2="514" y2="185" style="animation-delay:.6s"/>
+          <line class="rain-drop" x1="468" y1="152" x2="458" y2="195" style="animation-delay:.15s"/>
+          <line class="rain-drop" x1="507" y1="150" x2="497" y2="193" style="animation-delay:.45s"/>
+        </g>
+        <text x="490" y="220" text-anchor="middle" font-family="Fredoka One, cursive" font-size="16" fill="#0d47a1">🌧️ Rain falls!</text>
+
+        <!-- River flowing down mountain -->
+        <path d="M564 280 C540 295 510 305 480 310 C440 316 400 314 360 310 C320 306 280 310 240 315"
+              stroke="#64b5f6" stroke-width="10" fill="none" stroke-linecap="round"
+              style="animation: riverFlow 2s linear infinite; stroke-dasharray:16 10"/>
+        <text x="400" y="340" text-anchor="middle" font-family="Fredoka One, cursive" font-size="15" fill="white">🏔️ Flows back to sea!</text>
+        <style>@keyframes riverFlow{to{stroke-dashoffset:-26}}</style>
+
+        <!-- Cycle arrow label -->
+        <text x="350" y="30" text-anchor="middle" font-family="Fredoka One, cursive" font-size="19" fill="#01579b">The Never-Ending Water Ride! 🎡</text>
+      </svg>
+    </div>
+
+    <div class="science-box">
+      <div class="sci-title">🔬 No new water is ever made on Earth!</div>
+      Earth has had the same water for about 4.5 BILLION years. Every glass of water, every rain shower, every ocean wave — it's all ancient water recycling through the same loop. 
+      You and the dinosaurs drank from the same water! 🦕🥤
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#ffa726">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "Grandpa!! So the water in my bottle was dinosaur wee?!" 😱
+      </div>
+      <div class="char-bubble" style="--c:#ff7043">
+        <div class="speaker">👴 Grandpa says:</div>
+        "It's been cleaned a LOT since then, Rohinoy! 😂 Nature is an excellent recycler!"
+      </div>
+      <div class="char-bubble" style="--c:#f06292">
+        <div class="speaker">👧 Arushi says:</div>
+        "RAAAAIN! ☔" <em>(claps hands)</em>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="goTo(4)">⬅️ Back</button>
+      <span class="page-indicator">Chapter 6 of 7</span>
+      <button class="nav-btn btn-next" onclick="goTo(6)">Next Story! ➡️</button>
+    </div>
+  </div>
+
+  <!-- =============================== CHAPTER 6 =============================== -->
+  <div class="story-card" id="ch6">
+    <div class="card-banner" style="--c1:#ef5350;--c2:#b71c1c">
+      <div class="card-number">7</div>
+      <div class="card-icon">🫖⚙️</div>
+      <div class="card-title">The Kettle, the Steam, and the Super Machine!</div>
+    </div>
+
+    <div class="grandpa-speech">
+      Last chapter! You both did so well! Grandpa is so proud! 🥹<br><br>
+      You know Grandpa's kettle in the kitchen? When water gets to <strong>100°C</strong>, it boils and turns to steam. Right near the spout, the steam is <em>invisible</em> — you can't see it yet! A little farther away it cools slightly and you see the white fluffy cloud.<br><br>
+      Now here's the clever part — long ago, clever people thought: <em>"What if we TRAP that steam inside a big metal box?"</em> The steam pushes really hard. It pushes a piston back and forth. That piston turns a wheel. And that wheel can pull a whole <strong>train!</strong> 🚂<br><br>
+      <strong>Steam engines changed the whole world!</strong> All because of boiling water!
+    </div>
+
+    <div class="funny-box">
+      Grandpa once stared at the kettle steam for SO long trying to understand it, he forgot the tea was done and it went cold. Grandpa had to heat it up again. Steam: 1, Grandpa: 0. ☕😂
+    </div>
+
+    <div class="illus-wrap">
+      <svg viewBox="0 0 700 320" aria-label="Kettle with steam and simple steam engine">
+        <rect x="0" y="0" width="700" height="320" rx="22" fill="#fff8e1"/>
+
+        <!-- Kettle -->
+        <rect x="40" y="250" width="220" height="22" rx="8" fill="#6d4c41"/>
+        <!-- Flame -->
+        <path d="M100 250 C90 228 92 210 100 194 C108 179 108 163 100 148" stroke="#ff6d00" stroke-width="9" fill="none" stroke-linecap="round" style="animation:heat2 1.8s ease-in-out infinite"/>
+        <path d="M148 250 C138 228 140 210 148 194 C156 179 156 163 148 148" stroke="#ffab40" stroke-width="9" fill="none" stroke-linecap="round" style="animation:heat2 1.8s ease-in-out infinite .35s"/>
+        <path d="M196 250 C186 228 188 210 196 194 C204 179 204 163 196 148" stroke="#ff6d00" stroke-width="9" fill="none" stroke-linecap="round" style="animation:heat2 1.8s ease-in-out infinite .7s"/>
+        <!-- Kettle body -->
+        <ellipse cx="150" cy="185" rx="90" ry="66" fill="#ef5350"/>
+        <rect x="60" y="125" width="178" height="66" fill="#ef5350"/>
+        <!-- Spout -->
+        <path d="M236 140 Q282 110 286 165" stroke="#37474f" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <!-- Lid -->
+        <ellipse cx="150" cy="125" rx="64" ry="14" fill="#c62828"/>
+        <circle cx="150" cy="116" r="9" fill="#ffd740"/>
+        <!-- Handle -->
+        <path d="M224 138 Q270 118 292 128" stroke="#ef5350" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <!-- Invisible vapor indicator -->
+        <path d="M302 128 C340 112 370 106 402 104" fill="none" stroke="#90caf9" stroke-width="5" stroke-dasharray="10 12" stroke-linecap="round"/>
+        <text x="420" y="85" text-anchor="middle" font-family="Fredoka One, cursive" font-size="15" fill="#546e7a">Invisible here!</text>
+        <!-- Visible mist -->
+        <g style="animation:mistBig 3s ease-in-out infinite; transform-origin:440px 130px">
+          <circle cx="420" cy="140" r="22" fill="#cfd8dc" opacity=".7"/>
+          <circle cx="448" cy="128" r="18" fill="#eceff1" opacity=".8"/>
+          <circle cx="400" cy="152" r="16" fill="#e0e7ea" opacity=".7"/>
+          <circle cx="462" cy="148" r="14" fill="#cfd8dc" opacity=".65"/>
+        </g>
+        <text x="440" y="186" text-anchor="middle" font-family="Fredoka One, cursive" font-size="14" fill="#455a64">Visible mist ☁️</text>
+        <text x="150" y="310" text-anchor="middle" font-family="Fredoka One, cursive" font-size="16" fill="#b71c1c">Grandpa's Kettle 🫖</text>
+
+        <!-- Steam Engine -->
+        <rect x="82" y="240" width="110" height="60" rx="12" fill="#c62828"/>
+        <!-- Boiler label -->
+        <text x="137" y="277" text-anchor="middle" font-family="Fredoka One, cursive" font-size="16" fill="white">BOILER</text>
+        <!-- Pipe -->
+        <path d="M192 268 L242 268" stroke="#546e7a" stroke-width="14" stroke-linecap="round"/>
+        <!-- Cylinder -->
+        <rect x="242" y="230" width="100" height="70" rx="12" fill="#37474f"/>
+        <!-- Piston -->
+        <rect id="piston" x="254" y="243" width="36" height="44" rx="8" fill="#b0bec5" style="animation:piston2 2s ease-in-out infinite"/>
+        <!-- Rod -->
+        <line x1="290" y1="265" x2="336" y2="265" stroke="#b0bec5" stroke-width="10" stroke-linecap="round"/>
+        <!-- Spinning wheel -->
+        <g style="animation:spin 3.5s linear infinite; transform-origin:390px 278px">
+          <circle cx="390" cy="278" r="46" fill="none" stroke="#ffa726" stroke-width="8"/>
+          <line x1="390" y1="232" x2="390" y2="324" stroke="#ffa726" stroke-width="6"/>
+          <line x1="344" y1="278" x2="436" y2="278" stroke="#ffa726" stroke-width="6"/>
+          <line x1="357" y1="245" x2="423" y2="311" stroke="#ffa726" stroke-width="6"/>
+          <line x1="423" y1="245" x2="357" y2="311" stroke="#ffa726" stroke-width="6"/>
+        </g>
+        <text x="390" y="228" text-anchor="middle" font-family="Fredoka One, cursive" font-size="16" fill="#e65100">Spinning wheel! ⚙️</text>
+        <!-- Arrow for steam going in -->
+        <text x="300" y="218" text-anchor="middle" font-family="Fredoka One, cursive" font-size="13" fill="#ffa726">Steam trapped inside!</text>
+
+        <style>
+          @keyframes heat2{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+          @keyframes mistBig{0%,100%{opacity:.7;transform:translate(0,0)}50%{opacity:1;transform:translate(10px,-6px)}}
+          @keyframes piston2{0%,100%{transform:translateX(0)}50%{transform:translateX(18px)}}
+        </style>
+      </svg>
+    </div>
+
+    <div class="science-box">
+      <div class="sci-title">🔬 From kettle to trains, ships, factories!</div>
+      Steam engines powered the Industrial Revolution! Big ships, coal mines, cotton factories — all ran on boiling water's power. So next time your kettle whistles, Rohinoy, remember: the same idea once pulled a 200-tonne train! 🚂💨
+    </div>
+
+    <div class="char-scene">
+      <div class="char-bubble" style="--c:#ef5350">
+        <div class="speaker">🧒 Rohinoy says:</div>
+        "Can I make a steam engine with YOUR kettle, Grandpa?!"
+      </div>
+      <div class="char-bubble" style="--c:#ff7043">
+        <div class="speaker">👴 Grandpa says:</div>
+        "Maybe when you're a bit older, my brilliant engineer! 👨‍🔧 For now, you can just make the tea! ☕😄"
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="goTo(5)">⬅️ Back</button>
+      <span class="page-indicator">Chapter 7 of 7</span>
+      <button class="nav-btn btn-next final" onclick="goTo(7)">🎉 The End!</button>
+    </div>
+  </div>
+
+  <!-- =============================== FINAL SCREEN =============================== -->
+  <div class="story-card" id="ch7">
+    <div class="final-screen">
+      <div class="trophy">🏆</div>
+      <h2>You both finished the story! 🎉</h2>
+      <div class="stars-row">⭐⭐⭐⭐⭐</div>
+
+      <div class="grandpa-speech" style="text-align:left;margin:0 auto 24px;max-width:580px">
+        And that, my dear Rohinoy and sweet little Arushi, is the magical story of water!<br><br>
+        From two tiny H atoms and one O atom hugging together…<br>
+        To ice floating so fish can survive…<br>
+        To the same water riding the sky carousel forever…<br>
+        To steam powering the greatest machines ever built!<br><br>
+        <strong>Every time you drink water, splash in the bath, or look at a cloud — remember: you're looking at one of the universe's greatest magic tricks! 💧✨</strong><br><br>
+        Grandpa loves you to the moon and back! 🌙❤️
+      </div>
+
+      <div class="facts-row" style="justify-content:center;max-width:600px;margin:0 auto 20px">
+        <div class="fact-chip" style="--c:#4fc3f7">💧 H₂O = 2H + 1O</div>
+        <div class="fact-chip" style="--c:#80cbc4">🧊 90% of ice hides below water!</div>
+        <div class="fact-chip" style="--c:#ffcc02">🐟 Fish live under ice</div>
+        <div class="fact-chip" style="--c:#ff7043">☀️ Water cycles forever</div>
+        <div class="fact-chip" style="--c:#ef5350">🚂 Steam powers machines</div>
+        <div class="fact-chip" style="--c:#ab47bc">🦕 Dino water = your water!</div>
+      </div>
+
+      <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <button class="nav-btn btn-prev" onclick="goTo(0)" style="font-size:1rem">🔄 Read Again!</button>
+        <button class="nav-btn" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a)" onclick="goTo(0)">📖 Back to Start</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+  const TOTAL = 8;
+  const dotColors = ['#4fc3f7','#ab47bc','#26c6da','#80cbc4','#5c6bc0','#ffa726','#ef5350','#43a047'];
+  const dotLabels = ['1','2','3','4','5','6','7','🏆'];
+
+  // Build nav dots
+  const navDots = document.getElementById('navDots');
+  dotLabels.forEach((lbl, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dot-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = lbl;
+    btn.style.background = dotColors[i];
+    btn.style.color = 'white';
+    btn.onclick = () => goTo(i);
+    navDots.appendChild(btn);
+  });
+
+  function goTo(idx) {
+    document.querySelectorAll('.story-card').forEach((c,i) => c.classList.toggle('active', i === idx));
+    document.querySelectorAll('.dot-btn').forEach((d,i) => d.classList.toggle('active', i === idx));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Build floating stars
+  const bgStars = document.getElementById('bgStars');
+  const starColors = ['#ffd740','#ff8a65','#80deea','#ce93d8','#a5d6a7','#ff8fb1','#90caf9'];
+  for (let i = 0; i < 55; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = 6 + Math.random() * 14;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      background:${starColors[Math.floor(Math.random()*starColors.length)]};
+      --dur:${2.5+Math.random()*3}s;
+      --del:${Math.random()*4}s;
+    `;
+    bgStars.appendChild(s);
+  }
+</script>
+</body>
+</html>
